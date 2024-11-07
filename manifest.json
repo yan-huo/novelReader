@@ -106,7 +106,7 @@
             }
         },
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         }
     },
     "quickapp" : {},
@@ -132,25 +132,21 @@
             "urlCheck" : false
         },
         "usingComponents" : true,
-        "permission" : {
-            "scope.userLocation" : {
-                "desc" : "演示定位能力"
-            }
-        },
+        "permission" : {},
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         }
     },
     "mp-alipay" : {
         "usingComponents" : true,
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         }
     },
     "mp-baidu" : {
         "usingComponents" : true,
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         },
         "dynamicLib" : {
             "editorLib" : {
@@ -161,13 +157,16 @@
     "mp-toutiao" : {
         "usingComponents" : true,
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
+        },
+        "setting" : {
+            "urlCheck" : false
         }
     },
     "mp-jd" : {
         "usingComponents" : true,
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         }
     },
     "h5" : {
@@ -177,47 +176,42 @@
             "base" : ""
         },
         "sdkConfigs" : {
-            "maps" : {
-                "qqmap" : {
-                    "key" : "TKUBZ-D24AF-GJ4JY-JDVM2-IBYKK-KEBCU"
-                }
-            }
+            "maps" : {}
         },
         "async" : {
             "timeout" : 20000
         },
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         }
     },
     "vueVersion" : "3",
     "mp-kuaishou" : {
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         }
     },
     "mp-lark" : {
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         }
     },
     "mp-qq" : {
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
+        },
+        "setting" : {
+            "urlCheck" : false
         }
     },
     "quickapp-webview-huawei" : {
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         }
     },
     "quickapp-webview-union" : {
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         }
-    },
-    "uniStatistics" : {
-        "version" : "2",
-        "enable" : true
     }
 }
