@@ -11,11 +11,17 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/FileSystemManager/folderFiles",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarBackgroundColor": "#007AFF",
-		"backgroundColor": "#f4f5f7"
+		"backgroundColor": "#f3f4f4"
 	}
 }

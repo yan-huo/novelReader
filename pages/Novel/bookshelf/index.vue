@@ -1,19 +1,39 @@
 <template>
-	<view class="page-container">
-    <cover-view class="custom-nav-bar">
-      <uni-nav-bar title="书架" height="60rpx" backgroundColor="#007AFF" color="#fff" :border="false"></uni-nav-bar>
-    </cover-view>
+  <view class="page-container">
+    <uni-nav-bar
+      class="custom-nav-bar"
+      title="书架"
+      height="80rpx"
+      backgroundColor="#007AFF"
+      status-bar
+      color="#fff"
+      :border="false"
+    ></uni-nav-bar>
     <view class="container-main">
-      <s-pull-scroll class="pull-scroll-custom-back-top" :fixed="false" back-top ref="pullScrollRef" :pullDown="pullDown" :pullUp="loadData">
+      <s-pull-scroll
+        class="pull-scroll-custom-back-top"
+        :fixed="false"
+        back-top
+        ref="pullScrollRef"
+        :pullDown="pullDown"
+        :pullUp="loadData"
+      >
         <view class="list-box">
           <view class="item-box" v-for="item in list">
-            <view class="item-content">
+            <view class="item-content" @click="handleToBookReader(item)">
               <view class="book-cover">
-                <view class="cover-img"></view>
-                <view class="cover-name">名称名称名称名称名称名称名称名称名称名称名称名称</view>
+                <view
+                  class="cover-img"
+                  :style="{
+                    background: `linear-gradient(to bottom right, ${item.backgroundColor}, ${item.backgroundColor}99)`
+                  }"
+                >
+                  <view class="cover-bg"></view>
+                </view>
+                <view class="cover-name">{{ item.name }}</view>
               </view>
               <view class="book-name">
-                <view class="name">{{item.id}}.txt</view>
+                <view class="name">{{ item.name }}.txt</view>
                 <view class="progress">
                   <uni-icons type="info" size="16"></uni-icons>
                   <view>15.5%</view>
@@ -32,59 +52,52 @@
 
 <script setup>
 import { ref, nextTick, onMounted } from 'vue'
-import sPullScroll from "@/components/s-pull-scroll/index.vue";
+import sPullScroll from '@/components/s-pull-scroll/index.vue'
+import { getBookPage } from '../../../apiService'
+
 defineOptions({
   name: 'Bookshelf'
-});
+})
 const pullScrollRef = ref()
 const list = ref([])
 const handleAddBook = () => {
-  console.log('add book')
+  uni.navigateTo({
+    url: '/pages/FileSystemManager/folderFiles'
+  })
 }
+const handleToBookReader = (item) => {}
 const refresh = () => {
   nextTick(() => {
-    pullScrollRef.value.refresh();
-  });
+    pullScrollRef.value.refresh()
+  })
 }
 const pullDown = (pullScroll) => {
   setTimeout(() => {
-    loadData(pullScroll);
-  }, 200);
+    loadData(pullScroll)
+  }, 200)
 }
 const loadData = (pullScroll) => {
   if (pullScroll.page === 1) {
-    list.value = [];
+    list.value = []
   }
-  setTimeout(() => {
-    const newList = {
-      rows: [],
-      hasNext: true
-    }
-    for (let i = 0; i < 12; i++) {
-      newList.rows.push({
-        id: Date.now()
+  pullScroll.success()
+  getBookPage({ pageNo: pullScroll.page, pageSize: 12 }).then((data) => {
+    list.value = list.value.concat(
+      data.rows.map((item) => {
+        if (item.pagesNumber) {
+          item.percentage = Number(((item.progressPageNumber / item.pagesNumber) * 100).toFixed(1))
+        } else {
+          item.percentage = 0
+        }
+        return item
       })
+    )
+    console.log(list.value)
+    pullScroll.success()
+    if (!data.hasNext) {
+      pullScroll.finish()
     }
-    list.value = list.value.concat(newList.rows);
-    if (list.value.length > 50) {
-      newList.hasNext = true;
-    }
-    pullScroll.success();
-    if (!newList.hasNext) {
-      pullScroll.finish();
-    }
-  }, 1000)
-  return
-  getIscWorkWorkPlanPage({
-    pageSize: 12,
-    pageNo: pullScroll.page
-  }).then((newList) => {
-    list.value = list.value.concat(newList.rows);
-    pullScroll.success();
-    if (!newList.hasNext) {
-      pullScroll.finish();
-    }
-  });
+  })
 }
 onMounted(() => {
   refresh()
@@ -97,6 +110,7 @@ onMounted(() => {
     padding: 15rpx;
     display: flex;
     flex-wrap: wrap;
+
     .item-box {
       width: 33.3333%;
       flex-shrink: 0;
@@ -105,27 +119,35 @@ onMounted(() => {
       display: flex;
       align-items: center;
       justify-content: center;
+
       .item-content {
         height: 360rpx;
         width: 210rpx;
         box-sizing: border-box;
+
         .book-cover {
-          height: 75%;
+          height: 80%;
           box-sizing: border-box;
           background: #fff;
           border: 1px solid rgba(191, 192, 194, 0.7);
+
           .cover-img {
             width: 100%;
-            height: calc(100% - 50rpx);
+            height: calc(100% - 60rpx);
             box-sizing: border-box;
-            background-image: url("static/book-cover.png");
-            background-size: 100% 100%;
-            background-color: #ff5a5f;
+            .cover-bg {
+              height: 100%;
+              width: 100%;
+              box-sizing: border-box;
+              background-image: url('/static/book-cover.png');
+              background-size: 100% 100%;
+            }
           }
+
           .cover-name {
             font-size: 12px;
-            height: 50rpx;
-            line-height: 50rpx;
+            height: 60rpx;
+            line-height: 60rpx;
             padding-left: 10rpx;
             width: 100%;
             box-sizing: border-box;
@@ -136,13 +158,15 @@ onMounted(() => {
             font-weight: bold;
           }
         }
+
         .book-name {
-          height: 25%;
+          height: 20%;
           box-sizing: border-box;
           display: flex;
           flex-direction: column;
           justify-content: center;
           font-size: 12px;
+
           .name {
             overflow: hidden;
             text-overflow: ellipsis;
@@ -152,17 +176,19 @@ onMounted(() => {
             font-weight: bold;
             padding-bottom: 2rpx;
           }
+
           .progress {
             display: flex;
             align-items: center;
-            font-size: 10px;
-            color: #333;
+            font-size: 12px;
+            color: #909399;
             padding-top: 2rpx;
           }
         }
       }
     }
   }
+
   .add-btn {
     padding: 20rpx;
     border: none;

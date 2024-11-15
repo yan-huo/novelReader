@@ -7,5 +7,7 @@
 	},
 	"author": "",
 	"license": "MIT",
-	"dependencies": {}
+	"dependencies": {
+		"dayjs": "^1.11.13"
+	}
 }
